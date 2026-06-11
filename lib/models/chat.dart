@@ -1,12 +1,14 @@
-import '../models/chat_user.dart';
+
+
+import '../data/models/auth/user.dart';
 
 class Chat {
   final String uid;
   final bool isActive;
   final bool isGroup;
-  final List<ChatUser> members;
+  final List<UserModel> members;
 
-  late final List<ChatUser> _recipients;
+  late final List<UserModel> _recipients;
 
   Chat({
     required this.uid,
@@ -21,7 +23,7 @@ class Chat {
 
   // ================= RECIPIENTS =================
 
-  List<ChatUser> recipients() => _recipients;
+  List<UserModel> recipients() => _recipients;
 
   // ================= TITLE =================
 
@@ -38,7 +40,7 @@ class Chat {
   String imageURL() {
     if (!isGroup) {
       return _recipients.isNotEmpty
-          ? (_recipients.first.imageURL ?? defaultAvatar)
+          ? (_recipients.first.image ?? defaultAvatar)
           : defaultAvatar;
     }
 

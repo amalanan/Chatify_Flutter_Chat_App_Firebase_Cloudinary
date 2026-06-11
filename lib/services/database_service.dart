@@ -174,19 +174,40 @@ class DatabaseService {
 
   // ================= USERS =================
 
+  // Future<void> createUser({
+  //   required String uid,
+  //   required String email,
+  //   required String name,
+  //   String? image, // Cloudinary URL
+  // }) async {
+  //   try {
+  //     await _db.collection(USER_COLLECTION).doc(uid).set({
+  //       "email": email,
+  //       "name": name,
+  //       "image": image,
+  //       "last_active": FieldValue.serverTimestamp(),
+  //     });
+  //   } catch (e) {
+  //     print("createUser error: $e");
+  //   }
+  // }
   Future<void> createUser({
     required String uid,
     required String email,
     required String name,
-    String? image, // Cloudinary URL
+    String? image,
   }) async {
     try {
+      print("ABOUT TO SAVE USER TO FIRESTORE");
+
       await _db.collection(USER_COLLECTION).doc(uid).set({
         "email": email,
         "name": name,
         "image": image,
         "last_active": FieldValue.serverTimestamp(),
       });
+
+      print("USER SAVED TO FIRESTORE");
     } catch (e) {
       print("createUser error: $e");
     }
@@ -286,11 +307,11 @@ class DatabaseService {
           .doc(chatId)
           .collection(MESSAGES_COLLECTION)
           .add({
-        "sender_id": senderId,
-        "text": text,
-        "imageUrl": null,
-        "sent_time": FieldValue.serverTimestamp(),
-      });
+            "sender_id": senderId,
+            "text": text,
+            "imageUrl": null,
+            "sent_time": FieldValue.serverTimestamp(),
+          });
 
       await _db.collection(CHAT_COLLECTION).doc(chatId).update({
         "lastMessage": text,
@@ -311,11 +332,11 @@ class DatabaseService {
           .doc(chatId)
           .collection(MESSAGES_COLLECTION)
           .add({
-        "sender_id": senderId,
-        "text": null,
-        "imageUrl": imageUrl,
-        "sent_time": FieldValue.serverTimestamp(),
-      });
+            "sender_id": senderId,
+            "text": null,
+            "imageUrl": imageUrl,
+            "sent_time": FieldValue.serverTimestamp(),
+          });
 
       await _db.collection(CHAT_COLLECTION).doc(chatId).update({
         "lastMessage": "📷 Image",

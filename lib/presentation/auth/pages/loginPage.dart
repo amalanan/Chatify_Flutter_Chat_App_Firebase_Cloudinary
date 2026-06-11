@@ -6,7 +6,6 @@ import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../data/models/auth/signin_user_req.dart';
 import '../../../domain/usecases/auth/signin.dart';
 import '../../../pages/home_page.dart';
-import '../../../pages/register_page.dart';
 import '../../../service_locator.dart';
 
 class SignInPage extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:firebase_chat_app/presentation/auth/pages/register.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/appbar/app_bar.dart';

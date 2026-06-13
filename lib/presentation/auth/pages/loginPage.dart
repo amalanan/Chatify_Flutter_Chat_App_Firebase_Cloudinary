@@ -1,11 +1,11 @@
 import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
 import 'package:firebase_chat_app/presentation/auth/pages/register.dart';
+import 'package:firebase_chat_app/presentation/chats/pages/chats_page.dart';
 import 'package:flutter/material.dart';
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../data/models/auth/signin_user_req.dart';
 import '../../../domain/usecases/auth/signin.dart';
-import '../../../pages/home_page.dart';
 import '../../../service_locator.dart';
 
 class SignInPage extends StatelessWidget {
@@ -66,7 +66,7 @@ class SignInPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return HomePage();
+                            return ChatsPage();
                           },
                         ),
                         (route) => false,

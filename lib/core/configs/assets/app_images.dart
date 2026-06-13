@@ -10,5 +10,6 @@ class AppImages {
   static const String logo = '${basePath}logo33$format';
   static const String signin = '${basePath}getStarted.png';
   static const String logo2 = '${basePath}logo34$format';
+  static const String logo22 = '${basePath}logo22$format';
 
 }

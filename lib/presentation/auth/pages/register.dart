@@ -1,3 +1,4 @@
+import 'package:firebase_chat_app/presentation/chats/pages/chats_page.dart';
 import 'package:flutter/material.dart';
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/button/basic_app_button.dart';
@@ -81,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
-                            return HomePage();
+                            return ChatsPage();
                           },
                         ),
                         (route) => false,

@@ -122,14 +122,17 @@
 // //     );
 // //   }
 // // }
+import 'package:firebase_chat_app/presentation/chats/bloc/chats_cubit.dart';
 import 'package:firebase_chat_app/presentation/choose_mode/bloc/theme_cubit.dart';
 import 'package:firebase_chat_app/presentation/splash/pages/splash.dart';
+import 'package:firebase_chat_app/providers/authentication_provider.dart';
 import 'package:firebase_chat_app/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:provider/provider.dart';
 import 'core/configs/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
@@ -155,7 +158,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => ThemeCubit())],
+      providers: [
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => sl<ChatsCubit>()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder:
             (context, mode) => MaterialApp(

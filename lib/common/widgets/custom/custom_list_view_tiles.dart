@@ -1,10 +1,9 @@
-import 'package:firebase_chat_app/widgets/rounded_image.dart';
+import 'package:firebase_chat_app/common/widgets/custom/rounded_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../data/models/auth/user.dart';
-import '../models/chat.dart';
-import '../models/chat_message.dart';
+import '../../../data/models/auth/user.dart';
+import '../../../models/chat.dart';
+import '../../../models/chat_message.dart';
 import 'message_bubble.dart';
 
 class CustomListViewTile extends StatelessWidget {

@@ -172,25 +172,6 @@ class DatabaseService {
 
   DatabaseService();
 
-  // ================= USERS =================
-
-  // Future<void> createUser({
-  //   required String uid,
-  //   required String email,
-  //   required String name,
-  //   String? image, // Cloudinary URL
-  // }) async {
-  //   try {
-  //     await _db.collection(USER_COLLECTION).doc(uid).set({
-  //       "email": email,
-  //       "name": name,
-  //       "image": image,
-  //       "last_active": FieldValue.serverTimestamp(),
-  //     });
-  //   } catch (e) {
-  //     print("createUser error: $e");
-  //   }
-  // }
   Future<void> createUser({
     required String uid,
     required String email,

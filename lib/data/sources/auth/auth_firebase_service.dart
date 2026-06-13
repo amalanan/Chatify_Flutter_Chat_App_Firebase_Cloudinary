@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../../core/configs/constants/app_urls.dart';
 import '../../../domain/entities/auth/user.dart';
 import '../../models/auth/create_user_req.dart';
@@ -26,13 +25,31 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       );
       return Right('Sign In Was Successful');
     } on FirebaseAuthException catch (e) {
-      String message = '';
-      if (e.code == 'Invalid Email') {
-        message = 'No User Found for that Email';
-      } else if (e.code == 'invalid-credentials') {
-        message = 'Wrong Password Provided';
+      print('Firebase Error Code: ${e.code}');
+
+      String message;
+
+      switch (e.code) {
+        case 'user-not-found':
+          message = 'No user found for that email.';
+          break;
+
+        case 'wrong-password':
+          message = 'Wrong password provided.';
+          break;
+
+        case 'invalid-email':
+          message = 'Invalid email address.';
+          break;
+
+        case 'invalid-credential':
+          message = 'Invalid email or password.';
+          break;
+
+        default:
+          message = e.message ?? 'Authentication failed.';
       }
-      return left(message);
+      return Left(message);
     }
   }
 
@@ -54,35 +71,89 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
           });
       return Right('Sign Up Was Successful');
     } on FirebaseAuthException catch (e) {
-      String message = '';
-      if (e.code == 'weak-password') {
-        message = 'The password provided is too weak';
-      } else if (e.code == 'email-already-in-use') {
-        message = 'An account already exists with that email.';
+      print('Firebase Signup Code: ${e.code}');
+      print('Firebase Signup Message: ${e.message}');
+
+      String message;
+
+      switch (e.code) {
+        case 'weak-password':
+          message = 'The password provided is too weak';
+          break;
+
+        case 'email-already-in-use':
+          message = 'An account already exists with that email.';
+          break;
+
+        case 'invalid-email':
+          message = 'The email address is badly formatted.';
+          break;
+
+        case 'operation-not-allowed':
+          message = 'Email/password accounts are not enabled.';
+          break;
+
+        case 'network-request-failed':
+          message = 'Check your internet connection.';
+          break;
+
+        default:
+          message = e.message ?? 'Signup failed';
       }
-      return left(message);
+
+      return Left(message);
     }
   }
 
+  // @override
+  // Future<Either> getUser() async {
+  //   try {
+  //     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  //     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  //
+  //     var user =
+  //         await firebaseFirestore
+  //             .collection('chat_users')
+  //             .doc(firebaseAuth.currentUser?.uid)
+  //             .get();
+  //
+  //     UserModel userModel = UserModel.fromJson(user.data()!, user.id);
+  //     userModel.image =
+  //         firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
+  //     UserEntity userEntity = userModel.toEntity();
+  //     return Right(userEntity);
+  //   } catch (e) {
+  //     return const Left('An error occurred');
+  //   }
+  // }
   @override
   Future<Either> getUser() async {
     try {
       FirebaseAuth firebaseAuth = FirebaseAuth.instance;
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-      var user =
-          await firebaseFirestore
-              .collection('chat_users')
-              .doc(firebaseAuth.currentUser?.uid)
-              .get();
+      final uid = firebaseAuth.currentUser?.uid;
 
-      UserModel userModel = UserModel.fromJson(user.data()!, user.id);
+      if (uid == null) {
+        return const Left('User is not logged in');
+      }
+
+      final userDoc =
+          await firebaseFirestore.collection('chat_users').doc(uid).get();
+
+      if (!userDoc.exists || userDoc.data() == null) {
+        return const Left('User data not found in Firestore');
+      }
+
+      UserModel userModel = UserModel.fromJson(userDoc.data()!, userDoc.id);
+
       userModel.image =
           firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
-      UserEntity userEntity = userModel.toEntity();
-      return Right(userEntity);
+
+      return Right(userModel.toEntity());
     } catch (e) {
-      return const Left('An error occurred');
+      print('GetUser Error: $e');
+      return Left(e.toString());
     }
   }
 }

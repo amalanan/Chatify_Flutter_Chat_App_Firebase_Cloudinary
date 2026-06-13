@@ -18,16 +18,18 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:  Center(
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/logo22.png'),
-            fit: BoxFit.fitWidth,
+    return Scaffold(
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/logo22.png'),
+              fit: BoxFit.fitWidth,
+            ),
           ),
         ),
       ),
-    ),);
+    );
   }
 
   Future<void> redirectToGetStartedPage() async {

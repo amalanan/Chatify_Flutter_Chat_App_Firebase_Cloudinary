@@ -13,8 +13,6 @@ class ChatMessage {
     required this.sentTime,
   });
 
-  // ================= FROM FIRESTORE =================
-
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       senderId: json["sender_id"] ?? "",

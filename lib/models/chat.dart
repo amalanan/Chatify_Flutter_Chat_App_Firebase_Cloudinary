@@ -1,5 +1,3 @@
-
-
 import '../data/models/auth/user.dart';
 
 class Chat {
@@ -17,11 +15,8 @@ class Chat {
     required this.isGroup,
     required String currentUserUid,
   }) {
-    _recipients =
-        members.where((user) => user.uid != currentUserUid).toList();
+    _recipients = members.where((user) => user.uid != currentUserUid).toList();
   }
-
-  // ================= RECIPIENTS =================
 
   List<UserModel> recipients() => _recipients;
 
@@ -47,8 +42,7 @@ class Chat {
     return groupAvatar;
   }
 
-  static const String defaultAvatar =
-      "https://www.gravatar.com/avatar/?d=mp";
+  static const String defaultAvatar = "https://www.gravatar.com/avatar/?d=mp";
 
   static const String groupAvatar =
       "https://e7.pngegg.com/pngimages/380/670/png-clipart-group-chat-logo-blue-area-text-symbol-metroui-apps-live-messenger-alt-2-blue-text.png";

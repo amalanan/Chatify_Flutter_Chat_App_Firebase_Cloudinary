@@ -1,6 +1,6 @@
+import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
 import 'package:firebase_chat_app/presentation/auth/pages/register.dart';
 import 'package:flutter/material.dart';
-
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../data/models/auth/signin_user_req.dart';
@@ -46,8 +46,17 @@ class SignInPage extends StatelessWidget {
                   );
                   result.fold(
                     (l) {
+                      print('Error message: "$l"');
+                      print(l.runtimeType);
                       var snackbar = SnackBar(
-                        content: Text(l, style: TextStyle(color: Colors.black)),
+                        backgroundColor:
+                        context.isDarkMode ? Colors.white : Colors.black,
+                        content: Text(
+                          l,
+                          style: TextStyle(
+                            color: context.isDarkMode ? Colors.black : Colors.white,
+                          ),
+                        ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackbar);
                       print(l.toString());

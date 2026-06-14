@@ -1,4 +1,5 @@
 import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
+import 'package:firebase_chat_app/core/configs/assets/app_images.dart';
 import 'package:firebase_chat_app/presentation/auth/pages/register.dart';
 import 'package:firebase_chat_app/presentation/chats/pages/chats_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class SignInPage extends StatelessWidget {
       appBar: BasicAppBar(
         title: Padding(
           padding: const EdgeInsets.only(top: 16.0, bottom: 12, right: 40),
-          child: Image.asset('assets/images/logo33.png', fit: BoxFit.scaleDown),
+          child: Image.asset(AppImages.logo, fit: BoxFit.scaleDown),
         ),
       ),
       body: SingleChildScrollView(

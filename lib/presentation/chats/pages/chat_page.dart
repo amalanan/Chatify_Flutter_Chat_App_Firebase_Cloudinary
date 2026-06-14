@@ -144,7 +144,6 @@ class _ChatPageState extends State<ChatPage> {
                   .snapshots(),
           builder: (context, snapshot) {
             String statusText = '';
-
             if (snapshot.hasData && snapshot.data!.exists) {
               final data = snapshot.data!.data() as Map<String, dynamic>?;
               final lastActive = data?['last_active'];

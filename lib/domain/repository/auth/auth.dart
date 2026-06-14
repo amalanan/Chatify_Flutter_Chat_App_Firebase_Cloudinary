@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-
 import '../../../data/models/auth/create_user_req.dart';
 import '../../../data/models/auth/signin_user_req.dart';
 

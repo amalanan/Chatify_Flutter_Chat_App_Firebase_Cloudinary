@@ -48,19 +48,6 @@ class _ChatsPageState extends State<ChatsPage> {
         actions: [
           IconButton(
             icon: Icon(
-              Icons.edit_outlined,
-              color:
-                  context.isDarkMode ? AppColors.secondary : AppColors.primary,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NewChatPage()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
               Icons.logout,
               color:
                   context.isDarkMode
@@ -68,6 +55,48 @@ class _ChatsPageState extends State<ChatsPage> {
                       : Colors.purple.shade900,
             ),
             onPressed: () async {
+              final confirm =
+                  await showDialog<bool>(
+                    context: context,
+                    builder:
+                        (context) => AlertDialog(
+                          title: Text(
+                            'Sign Out',
+                            style: TextStyle(
+                              color:
+                                  context.isDarkMode
+                                      ? AppColors.secondary
+                                      : AppColors.primary,
+                            ),
+                          ),
+                          content: const Text(
+                            'Are you sure you want to sign out?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: Text(
+                                'Sign Out',
+                                style: TextStyle(
+                                  color:
+                                      context.isDarkMode
+                                          ? AppColors.secondary
+                                          : AppColors.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                  ) ??
+                  false;
+
+              if (!confirm) return;
+              if (!context.mounted) return;
+
               await FirebaseAuth.instance.signOut();
 
               if (!context.mounted) return;
@@ -235,6 +264,19 @@ class _ChatsPageState extends State<ChatsPage> {
             }
             return const SizedBox();
           },
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
+        child: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewChatPage()),
+            );
+          },
+          child: const Icon(Icons.edit_outlined, color: Colors.white),
         ),
       ),
     );

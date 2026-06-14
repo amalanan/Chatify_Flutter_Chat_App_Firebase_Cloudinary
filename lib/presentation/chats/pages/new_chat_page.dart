@@ -21,7 +21,7 @@ class NewChatPage extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: context.isDarkMode ? Colors.white : Colors.black,
+            color: context.isDarkMode ? AppColors.secondary : AppColors.primary,
           ),
         ),
       ),
@@ -91,7 +91,7 @@ class NewChatPage extends StatelessWidget {
           color:
               context.isDarkMode
                   ? Colors.white.withOpacity(0.05)
-                  : AppColors.grey,
+                  : AppColors.grey.withOpacity(0.30),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Row(
@@ -102,7 +102,13 @@ class NewChatPage extends StatelessWidget {
               backgroundImage: image.isNotEmpty ? NetworkImage(image) : null,
               child:
                   image.isEmpty
-                      ? Icon(Icons.person, color: AppColors.grey)
+                      ? Icon(
+                        Icons.person,
+                        color:
+                            context.isDarkMode
+                                ? AppColors.secondary
+                                : AppColors.primary,
+                      )
                       : null,
             ),
             const SizedBox(width: 12),
@@ -112,11 +118,24 @@ class NewChatPage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  color: context.isDarkMode ? Colors.white : Colors.black,
+                  color:
+                      context.isDarkMode
+                          ? AppColors.lightBackground
+                          : AppColors.darkBackground,
                 ),
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color:
+                    context.isDarkMode
+                        ? AppColors.secondary
+                        : AppColors.primary,
+              ),
+            ),
           ],
         ),
       ),
@@ -148,7 +167,6 @@ class NewChatPage extends StatelessWidget {
       }
     }
 
-    // If none exists, create a new chat document.
     if (chatId == null) {
       final newChatRef = chatsRef.doc();
       await newChatRef.set({

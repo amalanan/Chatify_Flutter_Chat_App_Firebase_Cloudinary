@@ -57,8 +57,6 @@ class DatabaseService {
     }
   }
 
-  // ================= CHATS =================
-
   Stream<QuerySnapshot> getChatsForUser(String uid) {
     return _db
         .collection(CHAT_COLLECTION)
@@ -102,8 +100,6 @@ class DatabaseService {
       print("deleteChat error: $e");
     }
   }
-
-  // ================= MESSAGES =================
 
   Stream<QuerySnapshot> streamMessages(String chatId) {
     return _db

@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../core/configs/assets/app_vectors.dart';
 import '../../../core/configs/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import '../../../services/cloudinary_service.dart';
 import '../../../services/media_service.dart';
+import '../../choose_mode/bloc/theme_cubit.dart';
 
 class ChatPage extends StatefulWidget {
   final String chatId;
@@ -88,12 +92,19 @@ class _ChatPageState extends State<ChatPage> {
       'imageUrl': imageUrl,
       'sent_time': FieldValue.serverTimestamp(),
     });
+    final members = [_currentUid, widget.receiverId];
 
+    for (final uid in members) {
+      if (uid == _currentUid) continue;
+
+      await chatRef.update({'unreadCount.$uid': FieldValue.increment(1)});
+    }
     await chatRef.set({
       'members': [_currentUid, widget.receiverId],
       'is_active': true,
       'is_group': false,
       'lastMessage': text ?? '📷 Photo',
+      'lastMessageTime': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
 
     if (_scrollController.hasClients) {
@@ -194,6 +205,29 @@ class _ChatPageState extends State<ChatPage> {
             );
           },
         ),
+        actions: [
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, mode) {
+              final isDark = mode == ThemeMode.dark;
+              return IconButton(
+                onPressed: () {
+                  context.read<ThemeCubit>().updateTheme(
+                    isDark ? ThemeMode.light : ThemeMode.dark,
+                  );
+                },
+                icon: SvgPicture.asset(
+                  isDark ? AppVectors.sun : AppVectors.moon,
+                  height: 22,
+                  width: 22,
+                  colorFilter: ColorFilter.mode(
+                    isDark ? Colors.white : Colors.black,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
 
       body: Column(
@@ -426,16 +460,26 @@ class _ChatPageState extends State<ChatPage> {
                       ),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 6),
           Expanded(
             child: TextField(
               controller: _messageController,
               decoration: InputDecoration(
                 hintText: 'Type a message',
-              ).applyDefaults(Theme.of(context).inputDecorationTheme),
+                filled: true,
+                fillColor: Colors.transparent,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                hintStyle: const TextStyle(
+                  color: Color(0xff383838),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 6),
           GestureDetector(
             onTap: _sendMessage,
             child: Container(

@@ -8,7 +8,7 @@ class CloudinaryService {
   Future<String?> uploadImage(PlatformFile file) async {
     try {
       final url = Uri.parse(
-        "https://api.cloudinary.com/v1_1/$AppURLs.cloudName/image/upload",
+        "https://api.cloudinary.com/v1_1/${AppURLs.cloudName}/image/upload",
       );
 
       final request = http.MultipartRequest("POST", url);

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_chat_app/presentation/chats/bloc/chats_cubit.dart';
-import 'package:firebase_chat_app/providers/authentication_provider.dart';
 import 'package:firebase_chat_app/services/cloudinary_service.dart';
 import 'package:firebase_chat_app/services/database_service.dart';
 import 'package:firebase_chat_app/services/media_service.dart';
@@ -37,7 +36,5 @@ Future<void> initializeDependencies() async {
     ChatsRepositoryImpl(sl<ChatsFirebaseService>()),
   );
   sl.registerSingleton<GetChatsUseCase>(GetChatsUseCase(sl<ChatsRepository>()));
-  sl.registerFactory<ChatsCubit>(
-        () => ChatsCubit(sl<GetChatsUseCase>()),
-  );
+  sl.registerFactory<ChatsCubit>(() => ChatsCubit(sl<GetChatsUseCase>()));
 }

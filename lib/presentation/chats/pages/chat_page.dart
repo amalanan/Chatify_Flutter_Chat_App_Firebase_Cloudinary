@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../../core/configs/theme/app_colors.dart';
-
 import 'package:get_it/get_it.dart';
 import '../../../services/cloudinary_service.dart';
 import '../../../services/media_service.dart';
@@ -154,7 +153,6 @@ class _ChatPageState extends State<ChatPage> {
                 statusText = _formatLastActive(lastActive.toDate());
               }
             }
-
             return Row(
               children: [
                 CircleAvatar(
@@ -398,7 +396,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _messageInputField(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
           GestureDetector(

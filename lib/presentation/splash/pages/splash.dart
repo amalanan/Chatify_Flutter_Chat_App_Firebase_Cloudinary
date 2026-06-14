@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../../core/configs/assets/app_images.dart';
 import '../../intro/pages/get_started.dart';
 
 class SplashPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/logo22.png'),
+              image: AssetImage(AppImages.logo22),
               fit: BoxFit.fitWidth,
             ),
           ),

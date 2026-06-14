@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../domain/usecases/chats/chats_usecase.dart';
 import 'chats_state.dart';
 import '../../../domain/entities/chats/chats.dart';
@@ -18,20 +17,11 @@ class ChatsCubit extends Cubit<ChatsState> {
     _subscription?.cancel();
 
     _subscription = getChatsUseCase(userId).listen((event) {
-      // event.fold(
-      //       (error) {
-      //     emit(ChatsError(error.toString()));
-      //   },
-      //       (data) {
-      //     // data = List<Chats>
-      //     emit(ChatsLoaded(List<Chats>.from(data)));
-      //   },
-      // );
       event.fold(
-            (error) {
+        (error) {
           emit(ChatsError(error.toString()));
         },
-            (data) {
+        (data) {
           emit(ChatsLoaded(List<Chats>.from(data)));
         },
       );

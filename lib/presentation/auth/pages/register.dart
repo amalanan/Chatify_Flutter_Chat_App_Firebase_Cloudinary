@@ -4,7 +4,6 @@ import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../data/models/auth/create_user_req.dart';
 import '../../../domain/usecases/auth/signup.dart';
-import '../../../pages/home_page.dart';
 import '../../../service_locator.dart';
 import 'loginPage.dart';
 

@@ -50,11 +50,14 @@ class SignInPage extends StatelessWidget {
                       print(l.runtimeType);
                       var snackbar = SnackBar(
                         backgroundColor:
-                        context.isDarkMode ? Colors.white : Colors.black,
+                            context.isDarkMode ? Colors.white : Colors.black,
                         content: Text(
                           l,
                           style: TextStyle(
-                            color: context.isDarkMode ? Colors.black : Colors.white,
+                            color:
+                                context.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                           ),
                         ),
                       );

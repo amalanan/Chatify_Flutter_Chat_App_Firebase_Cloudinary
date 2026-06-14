@@ -1,251 +1,90 @@
 # Chatify 💬
 
-A modern real-time chat application built with Flutter and Firebase.
-
-Chatify allows users to create accounts, connect with other users, exchange messages in real time, and share images through Cloudinary integration.
-
----
+Chatify is a real-time chat application built with Flutter and Firebase, following Clean Architecture principles to ensure scalability, maintainability, and clean separation of concerns.
 
 ## ✨ Features
 
-* 🔐 User Authentication
-* 👤 User Profiles
-* 💬 Real-Time Messaging
-* 🖼️ Image Sharing
-* ☁️ Cloudinary Image Storage
-* 🔥 Cloud Firestore Database
-* 📱 Responsive Flutter UI
-* ⚡ Real-Time Updates
-* 🕒 Last Active Tracking
-* 👥 One-to-One Chats
-* 🗂️ Chat Management
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-* Flutter
-* Dart
-
-### Backend & Services
-
+* User Authentication
+* Real-Time Messaging
+* User Search
+* Chat Management
+* Responsive UI
 * Firebase Authentication
-* Cloud Firestore
-* Cloudinary
+* Cloud Firestore Integration
+* State Management with Bloc/Cubit
+* Dependency Injection using GetIt
+* Clean Architecture Implementation
 
-### Dependency Injection
+## 🏗️ Architecture
 
-* GetIt
+The project follows Clean Architecture and is divided into three main layers:
 
-### File Handling
+### Presentation Layer
 
-* File Picker
+* UI Screens
+* Widgets
+* Bloc/Cubit State Management
 
----
+### Domain Layer
+
+* Entities
+* Repositories Contracts
+* Use Cases
+
+### Data Layer
+
+* Repository Implementations
+* Data Sources
+* Models
+* Firebase Services
 
 ## 📂 Project Structure
 
 ```text
 lib/
-│
-├── models/
-│   ├── chat.dart
-│   ├── chat_message.dart
-│   └── chat_user.dart
-│
-├── pages/
-│   ├── splash_page.dart
-│   ├── login_page.dart
-│   ├── register_page.dart
-│   ├── home_page.dart
-│   └── chat_page.dart
-│
-├── services/
-│   ├── database_service.dart
-│   ├── cloudinary_service.dart
-│   ├── media_service.dart
-│   └── navigation_service.dart
-│
+├── core/
+├── common/
+├── data/
+│── domain/
+│── presentation/
+│── services/
 └── main.dart
+└── service_locator.dart
 ```
 
----
+## 🛠️ Technologies
 
-## 🗄️ Firestore Structure
-
-### Users Collection
-
-```text
-chat_users
- └── {userId}
-      ├── email
-      ├── name
-      ├── image
-      └── last_active
-```
-
-Example:
-
-```json
-{
-  "email": "user@example.com",
-  "name": "John Doe",
-  "image": "https://res.cloudinary.com/...",
-  "last_active": "timestamp"
-}
-```
-
----
-
-### Chats Collection
-
-```text
-chats
- └── {chatId}
-      ├── members
-      ├── is_group
-      ├── is_active
-      ├── lastMessage
-      └── created_at
-```
-
-Example:
-
-```json
-{
-  "members": ["uid1", "uid2"],
-  "is_group": false,
-  "is_active": true,
-  "lastMessage": "Hello 👋",
-  "created_at": "timestamp"
-}
-```
-
----
-
-### Messages Subcollection
-
-```text
-chats
- └── {chatId}
-      └── messages
-           └── {messageId}
-```
-
-Text Message:
-
-```json
-{
-  "sender_id": "uid1",
-  "text": "Hello",
-  "imageUrl": null,
-  "sent_time": "timestamp"
-}
-```
-
-Image Message:
-
-```json
-{
-  "sender_id": "uid1",
-  "text": null,
-  "imageUrl": "https://res.cloudinary.com/...",
-  "sent_time": "timestamp"
-}
-```
-
----
-
-## ☁️ Image Upload Flow
-
-1. User selects an image using File Picker.
-2. Image is uploaded to Cloudinary.
-3. Cloudinary returns a secure image URL.
-4. The URL is stored in Firestore.
-5. The image is displayed inside the chat.
-
----
+* Flutter
+* Dart
+* Firebase Authentication
+* Cloud Firestore
+* Flutter Bloc
+* GetIt
+* Clean Architecture
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
-
 ```bash
-git clone https://github.com/your-username/chatify.git
+git clone <repository-url>
 cd chatify
-```
-
-### 2. Install Dependencies
-
-```bash
 flutter pub get
-```
-
-### 3. Configure Firebase
-
-* Create a Firebase project.
-* Enable Authentication.
-* Enable Cloud Firestore.
-* Download and add:
-
-  * `google-services.json` (Android)
-  * `GoogleService-Info.plist` (iOS)
-
-### 4. Configure Cloudinary
-
-Create a Cloudinary account and add your configuration inside:
-
-```dart
-const String cloudName = "YOUR_CLOUD_NAME";
-const String uploadPreset = "YOUR_UPLOAD_PRESET";
-```
-
----
-
-## ▶️ Run the App
-
-```bash
 flutter run
 ```
 
----
+## 🔐 Configuration
 
-## 📸 Screenshots
+Some configuration files such as `app_urls.dart` are excluded from version control and should be created locally before running the application.
 
-Add screenshots of:
+## 📚 Learning Goals
 
-* Splash Screen
-* Login Screen
-* Registration Screen
-* Home Screen
-* Chat Screen
+This project was built to practice:
 
----
-
-## 🔮 Future Improvements
-
-* Group Chats
-* Voice Messages
-* Message Reactions
-* Push Notifications
-* Typing Indicators
-* Read Receipts
-* Online Status
-* Message Search
-* Dark/Light Theme Support
-
----
-
-## 👩‍💻 Author
-
-**Amal**
-
-Flutter Developer passionate about building modern mobile applications and continuously learning new technologies.
-
----
+* Clean Architecture
+* Flutter Bloc
+* Firebase Integration
+* Dependency Injection
+* Scalable Flutter Project Structure
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is intended for educational and portfolio purposes.

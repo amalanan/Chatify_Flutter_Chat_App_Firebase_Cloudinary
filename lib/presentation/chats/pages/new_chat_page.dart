@@ -6,7 +6,7 @@ import '../../../core/configs/theme/app_colors.dart';
 import 'chat_page.dart';
 
 class NewChatPage extends StatelessWidget {
-  NewChatPage({super.key});
+  const NewChatPage({super.key});
 
   String get _currentUid => FirebaseAuth.instance.currentUser?.uid ?? '';
 

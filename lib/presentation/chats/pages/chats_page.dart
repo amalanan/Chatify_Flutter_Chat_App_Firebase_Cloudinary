@@ -110,7 +110,6 @@ class _ChatsPageState extends State<ChatsPage> {
                 child: CircularProgressIndicator(color: AppColors.primary),
               );
             }
-
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return EmptyState(context: context);
             }

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/common/helpers/is_dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../../core/configs/theme/app_colors.dart';
+import '../widgets/new_chat_page/user_list_item.dart';
 import 'chat_page.dart';
 
 class NewChatPage extends StatelessWidget {
@@ -62,81 +63,16 @@ class NewChatPage extends StatelessWidget {
                 final name = userData['name'] ?? 'Unknown';
                 final image = userData['image'] ?? '';
 
-                return _userItem(
-                  context: context,
+                return UserListItem(
                   receiverId: userDoc.id,
                   name: name,
                   image: image,
+                  onTap:
+                      () => _openOrCreateChat(context, userDoc.id, name, image),
                 );
               },
             );
           },
-        ),
-      ),
-    );
-  }
-
-  Widget _userItem({
-    required BuildContext context,
-    required String receiverId,
-    required String name,
-    required String image,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(15),
-      onTap: () => _openOrCreateChat(context, receiverId, name, image),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color:
-              context.isDarkMode
-                  ? Colors.white.withOpacity(0.05)
-                  : AppColors.grey.withOpacity(0.30),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 26,
-              backgroundColor: AppColors.grey.withOpacity(0.3),
-              backgroundImage: image.isNotEmpty ? NetworkImage(image) : null,
-              child:
-                  image.isEmpty
-                      ? Icon(
-                        Icons.person,
-                        color:
-                            context.isDarkMode
-                                ? AppColors.secondary
-                                : AppColors.primary,
-                      )
-                      : null,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color:
-                      context.isDarkMode
-                          ? AppColors.lightBackground
-                          : AppColors.darkBackground,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color:
-                    context.isDarkMode
-                        ? AppColors.secondary
-                        : AppColors.primary,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -150,7 +86,6 @@ class NewChatPage extends StatelessWidget {
   ) async {
     final chatsRef = FirebaseFirestore.instance.collection('chats');
 
-    // Look for an existing 1:1 chat between the two users.
     final existing =
         await chatsRef
             .where('members', arrayContains: _currentUid)

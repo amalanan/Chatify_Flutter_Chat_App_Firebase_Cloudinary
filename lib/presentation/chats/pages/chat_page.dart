@@ -10,6 +10,8 @@ import 'package:get_it/get_it.dart';
 import '../../../services/cloudinary_service.dart';
 import '../../../services/media_service.dart';
 import '../../choose_mode/bloc/theme_cubit.dart';
+import '../widgets/chat_page/message_bubble.dart';
+import '../widgets/chat_page/message_input_field.dart';
 
 class ChatPage extends StatefulWidget {
   final String chatId;
@@ -278,8 +280,7 @@ class _ChatPageState extends State<ChatPage> {
                     final imageUrl = data['imageUrl'] as String?;
                     final sentTime = data['sent_time'] as Timestamp?;
 
-                    return _messageBubble(
-                      context: context,
+                    return MessageBubble(
                       text: text,
                       imageUrl: imageUrl,
                       isMe: isMe,
@@ -290,210 +291,11 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          _messageInputField(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _messageBubble({
-    required BuildContext context,
-    required String? text,
-    required String? imageUrl,
-    required bool isMe,
-    required Timestamp? sentTime,
-  }) {
-    final hasImage = imageUrl != null && imageUrl.isNotEmpty;
-    final hasText = text != null && text.isNotEmpty;
-
-    return Column(
-      crossAxisAlignment:
-          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
-        Align(
-          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            padding:
-                hasImage
-                    ? const EdgeInsets.all(4)
-                    : const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
-            ),
-            decoration: BoxDecoration(
-              color:
-                  isMe
-                      ? AppColors.primary
-                      : context.isDarkMode
-                      ? Colors.white.withOpacity(0.08)
-                      : AppColors.grey,
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(16),
-                topRight: const Radius.circular(16),
-                bottomLeft: Radius.circular(isMe ? 16 : 4),
-                bottomRight: Radius.circular(isMe ? 4 : 16),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (hasImage)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: GestureDetector(
-                      onTap: () => _showFullImage(context, imageUrl),
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) return child;
-                          return Container(
-                            height: 150,
-                            width: 150,
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              color: AppColors.primary,
-                              value:
-                                  progress.expectedTotalBytes != null
-                                      ? progress.cumulativeBytesLoaded /
-                                          progress.expectedTotalBytes!
-                                      : null,
-                            ),
-                          );
-                        },
-                        errorBuilder:
-                            (context, error, stackTrace) => Container(
-                              height: 150,
-                              width: 150,
-                              alignment: Alignment.center,
-                              child: const Icon(Icons.broken_image),
-                            ),
-                      ),
-                    ),
-                  ),
-                if (hasText)
-                  Padding(
-                    padding:
-                        hasImage
-                            ? const EdgeInsets.fromLTRB(8, 6, 8, 2)
-                            : EdgeInsets.zero,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        color:
-                            isMe
-                                ? Colors.white
-                                : context.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-        if (sentTime != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              _formatTime(sentTime.toDate()),
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: AppColors.grey,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  void _showFullImage(BuildContext context, String imageUrl) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => Dialog(
-            backgroundColor: Colors.transparent,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: InteractiveViewer(child: Image.network(imageUrl)),
-            ),
-          ),
-    );
-  }
-
-  Widget _messageInputField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: _isUploading ? null : _sendImage,
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color:
-                    context.isDarkMode
-                        ? Colors.white.withOpacity(0.08)
-                        : AppColors.grey,
-                shape: BoxShape.circle,
-              ),
-              child:
-                  _isUploading
-                      ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: AppColors.primary,
-                        ),
-                      )
-                      : Icon(
-                        Icons.image_outlined,
-                        color: context.isDarkMode ? Colors.white : Colors.black,
-                        size: 20,
-                      ),
-            ),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Type a message',
-                filled: true,
-                fillColor: Colors.transparent,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                hintStyle: const TextStyle(
-                  color: Color(0xff383838),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 6),
-          GestureDetector(
-            onTap: _sendMessage,
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.send_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
+          MessageInputField(
+            controller: _messageController,
+            isUploading: _isUploading,
+            onSendMessage: _sendMessage,
+            onSendImage: _sendImage,
           ),
         ],
       ),
